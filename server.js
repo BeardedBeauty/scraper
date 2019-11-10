@@ -18,7 +18,7 @@ var port = process.env.port || 3001;
 // var db = mongo(databaseurl, collections);
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/wonderfuldb";
 
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -33,27 +33,50 @@ const reddit = "https://www.reddit.com";
 app.get("/", function (req, res) {
     axios.get(reddit + "/r/ChoosingBeggars/").then(function (response) {
         var $ = cheerio.load(response.data);
-        var result = {};
+        var results = [];
+        var iReallyFuckingHateDatabases = [];
         $("div.Post").each(function (i, element) {
             let title = $(element).children().find("h3").text();
             let postId = $(element).attr("id");
             let link = $(element).find("div." + postId).children().find("a").attr("href");
             result = {
                 title: title,
-                link: link
+                link: link,
+                rId: postId
             }
-            db.article.create(result).then(function (dbArticle) {
-                console.log(dbArticle);
-            }).catch(function (err) {
-                console.log(err);
-            });
+            results.push(result);
+        })
+        console.log(results + "\n--------------------------------");
+        db.article.find({}, (err, done) => {
+            if (err) throw err;
+            for (let q = 0; q < done.length; q++) {
+                iReallyFuckingHateDatabases.push(done[q]);
+                // const articleExists = done.find(art => art.title === results[q].title);
+                // if (!articleExists) db.article.create(results[q], (err, data) => {if (err) throw err;
+                //     console.log(data)
+                //     // db.article.insertMany(results, function () {
+
+                //     // }
+                // });
+            };
         });
+        // db.article.find({ rId: result.rId }, function (err, data) {
+        //     if (err) throw err;
+        //     console.log(data);
+        //     if (data == undefined) {
+        //         db.article.create(result).then(function (dbArticle) {
+        //             console.log(dbArticle);
+        //         }).catch(function (err) {
+        //             console.log(err);
+        //         });
+        //     };
+        // });
+        res.json(done)
     });
-    res.send("done, boo")
 });
 
 // app.get("/all", function (req, res) {
 //     res.send()
 // })
 
-app.listen(port, () => console.log(port));
+app.listen(port, () => console.log("port " + port));

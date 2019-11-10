@@ -7,7 +7,11 @@ let StorySchema = new Schema({
         type: String,
         required: true
     },
-    link:  {
+    link: {
+        type: String,
+        required: true
+    },
+    rId: {
         type: String,
         required: true
     },
