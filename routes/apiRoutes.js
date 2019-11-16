@@ -4,6 +4,14 @@ const cheerio = require("cheerio");
 const reddit = "https://www.reddit.com";
 
 module.exports = app => {
+    app.get("/content", (req, res) => {
+        db.article.find({}, (err, data) => {
+            if (err) throw err;
+            res.json(data);
+            // return dip(data);
+        })
+    })
+
     app.get("/scrape", (req, res) => {
         axios.get(reddit + "/r/ChoosingBeggars/").then(response => {
             var $ = cheerio.load(response.data);
@@ -23,22 +31,20 @@ module.exports = app => {
             db.article.find({}, (err, data) => {
                 if (err) throw err;
                 stupid = data;
-                var w = 0;
                 for (let q = 0; q < results.length; q++) {
                     const articleExists = stupid.find(art => art.rId === results[q].rId);
                     if (!articleExists) db.article.create(results[q], (err, data) => {
                         if (err) throw err;
+                        // res.json(data);
                         // console.log(data);
-                        w++;
                     })
-                };
-                console.log("--------------" + w + " new items inserted--------------")
+                }
             }).then(db.article.find({}, (err, data) => {
                 if (err) throw err;
                 res.json(data);
                 // return dip(data);
-            })
-            );
+            
+            }));
         });
     });
 

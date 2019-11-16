@@ -1,18 +1,20 @@
 const reddit = "https://www.reddit.com";
 
-$(document).on("click", ".neato", () => {
-    $.get("/scrape", data => {
-        $(".go").remove();
-        dump(data);
-    });
-});
+$(document).ready(() => {
+    // console.log("yee")
+    $.get("/content", db => {
+        dump(db);
+    })
+})
 
 $(document).on("click", ".neato", () => {
     $.get("/scrape", data => {
         $(".go").remove();
+        $(".dbupdate").remove();
         dump(data);
     });
 });
+
 $(document).on("click", ".idLink", () => {
     $.get("/comments", data => {
     });
@@ -31,7 +33,7 @@ function dump(truck) {
         // console.log(w);
 
         $(".row").after(
-            '<div class="col s12 m6">\
+            '<div class="col s12 m6 dbupdate">\
                 <div class="card blue-grey darken-1">\
                     <div class="card-content white-text">\
                         <span class="card-title">'+ w.title + '</span>\
