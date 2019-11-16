@@ -15,6 +15,10 @@ let StorySchema = new Schema({
         type: String,
         required: true
     },
+    comments: {
+        type: Array,
+        required: true
+    },
     note: {
         type: Schema.Types.ObjectId,
         ref: "Note"

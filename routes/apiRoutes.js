@@ -28,7 +28,7 @@ module.exports = app => {
                     const articleExists = stupid.find(art => art.rId === results[q].rId);
                     if (!articleExists) db.article.create(results[q], (err, data) => {
                         if (err) throw err;
-                        console.log(data);
+                        // console.log(data);
                         w++;
                     })
                 };
@@ -36,8 +36,27 @@ module.exports = app => {
             }).then(db.article.find({}, (err, data) => {
                 if (err) throw err;
                 res.json(data);
+                // return dip(data);
             })
             );
         });
     });
+
+    app.get("/comments/:id", (req, res) => {
+        let r = req.params.id.replace(/\:/g, "").toString();
+        // console.log(r);
+        db.article.find({
+            rId: r
+        }, (err, out) => {
+            if (err) throw err;
+            console.log(out);
+            res.json(out);
+        });
+    });
 };
+
+// function dip(stick) {
+//     for (let e = 0; e < stick.length; e++) {
+//         console.log(stick[e]);
+//     }
+// }

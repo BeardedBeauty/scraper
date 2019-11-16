@@ -6,4 +6,9 @@ module.exports = app => {
             msg: "dr"
         });
     });
+    app.get("/comments", (req, res) => {
+        res.render("comments", {
+            msg: "comment"
+        });
+    });
 };
