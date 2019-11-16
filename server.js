@@ -11,8 +11,8 @@ app.set("view engine", "handlebars");
 
 // let db = require("./models");
 
-require("./routes/apiRoutes")(app);
-require("./routes/htmlRoutes")(app);
+require("./routes/apiRoutes.js")(app);
+require("./routes/htmlRoutes.js")(app);
 
 let PORT = process.env.PORT || 3002;
 let MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/wonderfuldb";
