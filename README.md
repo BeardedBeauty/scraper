@@ -9,3 +9,5 @@ Clicking "Scrape" will scrape the forum again. Clicking "See Beggar" will bring 
 ## Built With
 * [Materialize](https://materializecss.com)
 * [Express](https://expressjs.com)
+* [Axios](https://www.npmjs.com/package/axios)
+* [Cheerio](https://cheerio.js.org)
